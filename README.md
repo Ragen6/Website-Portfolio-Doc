@@ -1,26 +1,69 @@
 # Doctor's Digital Sanctuary
 
-Here's an improved version that includes Vercel deployment, a dynamic architecture, and emphasizes that the site is not just a static landing page.
+A premium, modern, and fully responsive portfolio website for a single medical
+doctor. Built with a soft blue + white glassmorphism design language, dark-mode
+navy theme, and lightweight animations.
 
-Create a premium, modern, and fully responsive portfolio website for a single medical doctor with a clean, elegant, and professional design inspired by high-end healthcare websites from Dribbble and Behance. The website should be built using Next.js 15 (App Router), React, TypeScript, Tailwind CSS, Framer Motion, and next-intl, and be optimized for deployment on Vercel with server-side rendering (SSR), static generation (SSG) where appropriate, and dynamic routing. The project should follow a scalable architecture with reusable components, clean folder organization, SEO optimization, accessibility best practices, image optimization, lazy loading, code splitting, and a Lighthouse performance score above 95. The design should feature a soft blue and white color palette, glassmorphism effects, rounded cards, subtle gradients, premium typography using Poppins for headings and Inter for body text, generous whitespace, and lightweight animations such as fade-ins, floating cards, hover interactions, animated statistics, and smooth scrolling without sacrificing performance. The website must support Brazilian Portuguese (default) and English using next-intl, with a language switcher in the navigation and SEO-friendly localized routes such as / for Portuguese and /en for English. All text should come from translation files rather than hardcoded strings. The navigation should include Home, About, Services, Experience, Hospital, Gallery, Reviews, FAQ, Contact, and a prominent "Book Appointment" button. The hero section should feature a professional doctor portrait, name, specialization, short introduction, WhatsApp and appointment call-to-action buttons, and animated statistic cards displaying years of experience, patients treated, patient satisfaction, and hospital affiliation. Include an About section with the doctor's biography, education, certifications, medical license, specialties, and career timeline. The Services section should display elegant cards with icons, descriptions, and subtle hover animations. Create a dedicated Hospital section containing the hospital's name, logo, address, department, working hours, contact information, website, and an embedded Google Map with a pinned location, along with buttons for opening Google Maps and getting directions so both local Brazilian patients and international visitors can easily locate the hospital. Include a testimonials carousel, FAQ accordion, professional gallery, and a contact section with WhatsApp, phone number, email, social media links, working hours, and a validated contact form. Build the website as a dynamic application rather than a static landing page. Store the doctor's profile, services, hospital information, social links, working hours, translations, gallery, and testimonials in structured JSON files or a database such as Supabase or PostgreSQL so the content can be updated easily without modifying the UI. Create reusable APIs or server actions for handling contact forms and future appointment requests. Prepare the project so it can later include an admin dashboard for editing doctor information, services, testimonials, and hospital details. Ensure the codebase is modular, maintainable, and production-ready, with reusable UI components, centralized configuration files, and environment variables for API keys. Finally, configure the project for one-click deployment on Vercel, including automatic deployments from GitHub, proper metadata generation, sitemap, robots.txt, Open Graph support, structured data (Doctor and Hospital schema), and a professional, trustworthy user experience that feels like a premium private healthcare website while remaining lightweight, fast, and easy to scale in the future.
+## Stack
 
-This project was built with [Lovable](https://lovable.dev).
+- **Framework:** TanStack Start (React 19) + TypeScript strict
+- **Styling:** Tailwind CSS v4 (OKLch tokens, CSS-first config)
+- **Routing:** TanStack Router (file-based), SSR via Nitro
+- **UI:** light shadcn/ui primitives (Button, Input, Textarea, Label, Carousel, Sonner)
+- **Contact:** react-hook-form + zod, Cloudflare Turnstile (anti-spam), delivered
+  by email via Resend
+- **Deploy target:** Cloudflare Pages (Advanced/SSR — `dist/_worker.js`)
 
-## Build with Lovable
+## Pages
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c5139861-e088-4e1a-bef5-7d92a5f8cfdd).
+- `/` — hero, animated stats, hospital carousel
+- `/about` — bio, education, certifications
+- `/services` — services, hospital cards + embedded maps
+- `/contact` — validated contact form (Turnstile + email delivery)
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+All site content lives in one place: `src/content/site.ts`.
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requires Node.js + npm.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
 npm i
-npm run dev
+npm run dev      # http://localhost:8080
 ```
+
+## Production build (Cloudflare Pages)
+
+```sh
+npm run build
+```
+
+The `cloudflare-pages` Nitro preset emits static assets plus a single SSR Worker
+under `dist/` (`dist/_worker.js`). Cloudflare Pages auto-detects it as an
+Advanced/SSR Worker. Publish **`dist`** as the build output directory.
+
+## Environment variables
+
+See `.env.example`. Required for the contact form to work:
+
+| Variable                | Purpose                                          |
+| ----------------------- | ------------------------------------------------ |
+| `VITE_TURNSTILE_SITE_KEY` | Public Turnstile site key (browser)            |
+| `TURNSTILE_SECRET_KEY`    | Private Turnstile key (server)                 |
+| `RESEND_API_KEY`        | Resend API key for email delivery               |
+| `RESEND_FROM_EMAIL`     | Verified Resend sender address                   |
+| `RESEND_FROM_NAME`      | Sender display name (optional)                   |
+| `RESEND_TO_EMAIL`       | Delivery inbox (defaults to the doctor's email)  |
+
+## Deploying
+
+1. Push this repo to GitHub.
+2. In Cloudflare Pages, create a project connected to the repo.
+3. Set **Build command** `npm run build`, **Build output directory** `dist`.
+4. Add the environment variables above in the Pages dashboard.
+5. After first deploy, replace `your-domain.pages.dev` in `public/sitemap.xml`
+   and `public/robots.txt` with your real domain.
+
+---
+
+This project was built with [Lovable](https://lovable.dev).

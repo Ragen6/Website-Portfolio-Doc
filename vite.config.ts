@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Cloudflare Pages uses the `cloudflare-pages` preset: the build emits static
+  // assets under `dist/` plus a single `dist/_worker.js` (Advanced/SSR mode),
+  // which Cloudflare Pages auto-detects as a Worker.
+  nitro: { preset: "cloudflare-pages" },
 });
